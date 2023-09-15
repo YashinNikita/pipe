@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'pipe-jenkins-agent-1'
+    }
 
     environment {
         REPO_URL = 'https://github.com/YashinNikita/curl.git'
@@ -11,6 +13,6 @@ pipeline {
                 git url: env.REPO_URL, branch: 'master'
             }
         }
-        // todo add more stages for build, test, etc.
+        // TODO: Add more stages for build, test, etc.
     }
 }

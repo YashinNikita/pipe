@@ -1,4 +1,5 @@
 FROM jenkins/jenkins:lts
+COPY init-agent.groovy /usr/share/jenkins/ref/init.groovy.d/init-agent.groovy
 
 RUN jenkins-plugin-cli --plugins \
     git \
