@@ -9,23 +9,7 @@ services:
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - ./:/var/my_local_repo  # Map the current directory to /var/my_local_repo inside the container
-    networks:
-      - dev_network
+      - ./jobs:/var/jenkins_home/jobs
 
-  jenkins-agent:
-    image: jenkins/agent
-    networks:
-      - dev_network
-
-  artifactory:
-    image: docker.bintray.io/jfrog/artifactory-oss
-    ports:
-      - "8081:8081"
-    networks:
-      - dev_network
-
-networks:
-  dev_network:
 volumes:
   jenkins_home:
