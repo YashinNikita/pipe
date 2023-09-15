@@ -1,15 +1,24 @@
-version: '3'
+version: '3.7'
 services:
   jenkins-master:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: jenkins/jenkins:lts
+    container_name: jenkins-master
     ports:
       - "8080:8080"
-      - "50000:50000"
+      - "50000:50000" # JNLP
     volumes:
       - jenkins_home:/var/jenkins_home
-      - ./jobs:/var/jenkins_home/jobs
+      - ./init.groovy.d:/var/jenkins_home/init.groovy.d
+
+  jenkins-agent:
+    image: jenkins/agent:latest
+    container_name: jenkins-agent
+    depends_on:
+      - jenkins-master
+    environment:
+      - JENKINS_URL=http://jenkins-master:8080
+      - JENKINS_AGENT_NAME=my-agent
+      # - JENKINS_SECRET=your_secret_here
 
 volumes:
   jenkins_home:
