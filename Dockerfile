@@ -1,7 +1,7 @@
 FROM jenkins/jenkins:lts
-COPY init-agent.groovy /usr/share/jenkins/ref/init.groovy.d/init-agent.groovy
 
-RUN jenkins-plugin-cli --plugins \
+RUN jenkins-plugin-cli  \
+    --plugins \
     git \
     github \
     docker-plugin \
@@ -13,7 +13,17 @@ RUN jenkins-plugin-cli --plugins \
     pipeline-utility-steps \
     pipeline-model-definition \
     code-coverage-api \
-    markdown-formatter
+    markdown-formatter \
+    ssh-slaves \
+
+USER root
+RUN apt-get update && \
+    apt-get install -y curl git make gcc
+
+USER jenkins
 
 EXPOSE 8080
 EXPOSE 50000
+
+
+
