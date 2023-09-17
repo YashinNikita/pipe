@@ -1,5 +1,7 @@
+# Base image
 FROM jenkins/jenkins:lts
 
+# Install Jenkins plugins
 RUN jenkins-plugin-cli  \
     --plugins \
     git \
@@ -13,17 +15,19 @@ RUN jenkins-plugin-cli  \
     pipeline-utility-steps \
     pipeline-model-definition \
     code-coverage-api \
-    markdown-formatter \
-    ssh-slaves \
+    markdown-formatter
 
+# Switch to root user to install additional packages
 USER root
-RUN apt-get update && \
-    apt-get install -y curl git make gcc
 
+# Install required packages for building and testing cURL
+RUN apt-get update && \
+    apt-get install -y make gcc g++ automake libtool libssl-dev && \
+    apt-get clean
+
+# Switch back to the jenkins user
 USER jenkins
 
+# Expose ports
 EXPOSE 8080
 EXPOSE 50000
-
-
-
